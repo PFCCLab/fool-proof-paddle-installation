@@ -1,5 +1,5 @@
-# fool-proof-paddle
-you can use this tool install Paddle tools automaticly
+# fool-proof-paddle-installation
+You can use this foolproof tool to download and install PADDLE automatically.
 
 自动、快速的下载你想要下载的 Paddle 开源库，并且安装依赖。
 
