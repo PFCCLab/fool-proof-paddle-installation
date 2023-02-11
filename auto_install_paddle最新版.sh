@@ -75,13 +75,20 @@ case $input in
         echo "否，将会安装 CUDA"
 
         CUDA_VERSION=$(nvidia-smi | grep CUDA | grep -oP '(?<=CUDA Version: )[^ ]+')
+        #判空
+        if [ -z "$CUDA_VERSION" ] || [ -z "${CUDA_VERSION// }" ]; then
+        echo "你的显卡驱动似乎存在问题，运行nvidia-smi结果如下："
+        nvidia-smi
+        echo "如果出现错误请重启，如果正常显示请联系开发人员"
+        fi
+
         check_results=`"gcc" "-dumpversion"`
         gcc_version=11
 
         IF_PROBLEM1=$(a=$CUDA_VERSION b=11.2;expr $a \< $b)
         if [ $IF_PROBLEM1 -eq 1 ]
         then
-        echo "你的显卡驱动存在问题或版本有问题，清截图反馈开发人员"
+        echo "你的显卡驱动存在问题或版本有问题，请截图反馈开发人员"
         nvidia-smi
         exit 0
         fi
