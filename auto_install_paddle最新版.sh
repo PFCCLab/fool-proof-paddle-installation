@@ -10,18 +10,47 @@ nvidia-smi
 echo "上述出现详细信息则正常，若出现错误，请检查你的GPU驱动"
 echo "请问你是否选择安装GPU版本的 Paddle？[Y/N]，若选择N则安装CPU版本"
 read -r -p "Are You Sure? [Y/N] " input
-
+ 
 case $input in
     [yY][eE][sS]|[yY])
-        echo "接下来开始 Paddle GPU 版本的安装（默认安装11.2的版本）"
-        python -m pip install paddlepaddle-gpu==2.4.1.post112 -f https://www.paddlepaddle.org.cn/whl/linux/mkl/avx/stable.html
+        echo "接下来开始 Paddle GPU 版本的安装（默认安装 post11.2 的版本）"
+        python_version=$(python -V)
+        # Extract the number
+        number=`echo $python_version | cut -d'.' -f2`
+        if [ $number -eq 10 ]
+        then
+            wget -c https://paddle-wheel.bj.bcebos.com/2.4.1/linux/linux-gpu-cuda11.2-cudnn8-mkl-gcc8.2-avx/paddlepaddle_gpu-2.4.1.post112-cp310-cp310-linux_x86_64.whl
+            pip install paddlepaddle_gpu-2.4.1.post112-cp310-cp310-linux_x86_64.whl -i https://pypi.tuna.tsinghua.edu.cn/simple
+        elif [ $number -eq 9 ]
+        then
+            wget -c https://paddle-wheel.bj.bcebos.com/2.4.1/linux/linux-gpu-cuda11.2-cudnn8-mkl-gcc8.2-avx/paddlepaddle_gpu-2.4.1.post112-cp39-cp39-linux_x86_64.whl
+            pip install paddlepaddle_gpu-2.4.1.post112-cp39-cp39-linux_x86_64.whl -i https://pypi.tuna.tsinghua.edu.cn/simple
+        elif [ $number -eq 8 ]
+        then
+            wget -c https://paddle-wheel.bj.bcebos.com/2.4.1/linux/linux-gpu-cuda11.2-cudnn8-mkl-gcc8.2-avx/paddlepaddle_gpu-2.4.1.post112-cp38-cp38-linux_x86_64.whl
+            pip install paddlepaddle_gpu-2.4.1.post112-cp38-cp38-linux_x86_64.whl -i https://pypi.tuna.tsinghua.edu.cn/simple
+        elif [ $number -eq 7 ]
+        then
+            wget -c https://paddle-wheel.bj.bcebos.com/2.4.1/linux/linux-gpu-cuda11.2-cudnn8-mkl-gcc8.2-avx/paddlepaddle_gpu-2.4.1.post112-cp37-cp37m-linux_x86_64.whl
+            pip install paddlepaddle_gpu-2.4.1.post112-cp37-cp37m-linux_x86_64.whl -i https://pypi.tuna.tsinghua.edu.cn/simple
+        elif [ $number -eq 6 ]
+        then
+            wget -c https://paddle-wheel.bj.bcebos.com/2.4.1/linux/linux-gpu-cuda11.2-cudnn8-mkl-gcc8.2-avx/paddlepaddle_gpu-2.4.1.post112-cp36-cp36m-linux_x86_64.whl
+            pip install paddlepaddle_gpu-2.4.1.post112-cp36-cp36m-linux_x86_64.whl -i https://pypi.tuna.tsinghua.edu.cn/simple
+        else
+            echo "您的 python 版本不支持！请确保python版本在3.6到3.10，若有疑问请联系开发者"
+            echo "您现在的python版本为：$number"
+            exit 0
+        fi
+
+        python3 -m pip install paddlepaddle-gpu==2.4.1.post112 -f https://www.paddlepaddle.org.cn/whl/linux/mkl/avx/stable.html
         echo " "
         echo "Paddle GPU 版本安装完毕，接下来进行依赖库的安装"
         echo " "
         ;;
 
     [nN][oO]|[nN])
-        python -m pip install paddlepaddle -i https://pypi.tuna.tsinghua.edu.cn/simple
+        python3 -m pip install paddlepaddle -i https://pypi.tuna.tsinghua.edu.cn/simple
         echo "❀ 恭喜你完成 Paddle CPU 版本的安装，接下来开启愉快的使用把！"
         exit 0
         ;;
@@ -32,8 +61,10 @@ case $input in
         ;;
 esac
 
+echo "若上述wget下载失败，请重新运行程序会自动断线重连，有其他问题请联系开发者"
 
-echo "接下来进行 CUDA 的安装，你是否已经安装好 CUDA【注意，CUDA必须小于12】？[Y/N]"
+echo "接下来进行 CUDA 的安装，你是否已经安装好 CUDA【注意，安装的CUDA必须小于12】？[Y/N]"
+
 read -r -p "Are You Sure? [Y/N] " input
 case $input in
     [yY][eE][sS]|[yY])
@@ -42,20 +73,42 @@ case $input in
 
     [nN][oO]|[nN])
         echo "否，将会安装 CUDA"
+
+        _CUDA_VERSION=$(nvidia-smi | grep CUDA | grep -oP '(?<=CUDA Version: )[^ ]+')
+        CUDA_VERSION=${_CUDA_VERSION%.*}
         check_results=`"gcc" "-dumpversion"`
         gcc_version=11
+
         if [ $check_results -lt $gcc_version ]
         then
+            # gcc 小于 11，通常为9，可以编译任意版本
             echo "将会安装 cuda-11.2 运行时"
             echo "【警告！！如果里面看到了安装驱动的选项如 [x] 410.xxx】"
-            echo "【请选择后，按回车键取消至 [ ] 410.xxx，避免出现问题】"
+            echo "【请选择后，按回车键取消至 [ ] 410.xxx，避免让电脑黑屏！】"
             wget -c https://developer.download.nvidia.com/compute/cuda/11.2.2/local_installers/cuda_11.2.2_460.32.03_linux.run
+            echo " "
+            echo "================================="
+            echo "此处打开和安装都需要一些时间...根据机器和网络有所不同可能需要几分钟，请耐心等待"
+            echo "================================="
+            echo " "
             sudo sh cuda_11.2.2_460.32.03_linux.run
         else
-            echo "将会安装 cuda-11.7 运行时"
+            # gcc 大于等于 11 ，只编译cuda14、15以上的版本
+            echo "你的gcc版本为$gcc_version 只能安装CUDA>=14的版本"
+            if [ $CUDA_VERSION -lt 14 ]
+            then
+                echo "你的驱动CUDA兼容版本太低！请升级至少至14以上，若有疑问请联系开发人员"
+                exit 0 
+            fi
+
             echo "【警告！！如果里面看到了安装驱动的选项如 [x] 410.xxx】"
-            echo "【请选择后，按回车键取消至 [ ] 410.xxx，避免出现问题】"
-            wget -c https://developer.download.nvidia.com/compute/cuda/11.7.1/local_installers/cuda_11.7.1_515.65.01_linux.run
+            echo "【请选择后，按回车键取消至 [ ] 410.xxx，避免让电脑黑屏！】"
+            wget -c https://developer.download.nvidia.com/compute/cuda/11.4.4/local_installers/cuda_11.4.4_470.82.01_linux.run
+            echo " "
+            echo "================================="
+            echo "此处打开和安装都需要一些时间...根据机器和网络有所不同可能需要几分钟，请耐心等待"
+            echo "================================="
+            echo " "
             sudo sh cuda_11.7.1_515.65.01_linux.run
         fi
         ;;
@@ -65,7 +118,6 @@ case $input in
         exit 0
         ;;
 esac
-
 
 
 echo " "
@@ -142,6 +194,6 @@ echo "验证是否成功，打印nvcc信息"
 nvcc -V
 echo " "
 echo "最后验证安装是否成功，请稍后......"
-python -c "import paddle;paddle.utils.run_check()"
+python3 -c "import paddle;paddle.utils.run_check()"
 echo " "
 echo "❀ 恭喜你完成环境配置，接下来请根据喜好安装 paddle 套件"
