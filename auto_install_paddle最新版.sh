@@ -78,7 +78,13 @@ case $input in
         CUDA_VERSION=${_CUDA_VERSION%.*}
         check_results=`"gcc" "-dumpversion"`
         gcc_version=11
-
+        if [ $CUDA_VERSION -lt 14 ]
+        then
+        echo "你的显卡驱动存在问题或版本有问题，清截图反馈开发人员"
+        nvidia-smi
+        exit 0
+        fi
+        
         if [ $check_results -lt $gcc_version ]
         then
             # gcc 小于 11，通常为9，可以编译任意版本
