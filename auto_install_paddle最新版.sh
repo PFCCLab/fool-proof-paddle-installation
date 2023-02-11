@@ -75,10 +75,11 @@ case $input in
         echo "否，将会安装 CUDA"
 
         _CUDA_VERSION=$(nvidia-smi | grep CUDA | grep -oP '(?<=CUDA Version: )[^ ]+')
-        CUDA_VERSION=${_CUDA_VERSION%.*}
         check_results=`"gcc" "-dumpversion"`
         gcc_version=11
-        if [ $CUDA_VERSION -lt 14 ]
+
+        IF_PROBLEM1=$(a=$CUDA_VERSION b=11.2;expr $a \< $b)
+        if [ $IF_PROBLEM1 -eq 1 ]
         then
         echo "你的显卡驱动存在问题或版本有问题，清截图反馈开发人员"
         nvidia-smi
@@ -100,10 +101,11 @@ case $input in
             sudo sh cuda_11.2.2_460.32.03_linux.run
         else
             # gcc 大于等于 11 ，只编译cuda14、15以上的版本
-            echo "你的gcc版本为$gcc_version 只能安装CUDA>=14的版本"
-            if [ $CUDA_VERSION -lt 14 ]
+            echo "你的gcc版本为$gcc_version 只能安装CUDA>=11.4的版本"
+            IF_PROBLEM2=$(a=$CUDA_VERSION b=11.4;expr $a \< $b)
+            if [ $IF_PROBLEM2 -eq 1 ]
             then
-                echo "你的驱动CUDA兼容版本太低！请升级至少至14以上，若有疑问请联系开发人员"
+                echo "你的驱动CUDA兼容版本太低！请升级至少至11.4以上，若有疑问请联系开发人员"
                 exit 0 
             fi
 
