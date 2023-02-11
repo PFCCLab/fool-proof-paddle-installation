@@ -74,7 +74,7 @@ case $input in
     [nN][oO]|[nN])
         echo "否，将会安装 CUDA"
 
-        _CUDA_VERSION=$(nvidia-smi | grep CUDA | grep -oP '(?<=CUDA Version: )[^ ]+')
+        CUDA_VERSION=$(nvidia-smi | grep CUDA | grep -oP '(?<=CUDA Version: )[^ ]+')
         check_results=`"gcc" "-dumpversion"`
         gcc_version=11
 
