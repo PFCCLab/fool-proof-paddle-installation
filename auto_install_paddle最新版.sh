@@ -109,7 +109,7 @@ case $input in
             echo "此处打开和安装都需要一些时间...根据机器和网络有所不同可能需要几分钟，请耐心等待"
             echo "================================="
             echo " "
-            sudo sh cuda_11.7.1_515.65.01_linux.run
+            sudo sh cuda_11.4.4_470.82.01_linux.run
         fi
         ;;
 
