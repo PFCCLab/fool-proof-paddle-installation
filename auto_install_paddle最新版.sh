@@ -1,7 +1,7 @@
 echo "====== 欢迎使用 Paddle 全自动安装与环境配置工具 ======"
 
 echo "初始环境配置中，请输入密码......"
-sudo apt -y install wget gcc g++ 
+sudo apt -y install wget gcc g++  python3-pip
 
 echo "配置完毕，接下来开始GPU库的安装，请确保你已经安装好驱动"
 
@@ -20,37 +20,37 @@ case $input in
         if [ $number -eq 10 ]
         then
             wget -c https://paddle-wheel.bj.bcebos.com/2.4.1/linux/linux-gpu-cuda11.2-cudnn8-mkl-gcc8.2-avx/paddlepaddle_gpu-2.4.1.post112-cp310-cp310-linux_x86_64.whl
-            pip install paddlepaddle_gpu-2.4.1.post112-cp310-cp310-linux_x86_64.whl -i https://pypi.tuna.tsinghua.edu.cn/simple
+            pip3 install paddlepaddle_gpu-2.4.1.post112-cp310-cp310-linux_x86_64.whl -i https://pypi.tuna.tsinghua.edu.cn/simple
         elif [ $number -eq 9 ]
         then
             wget -c https://paddle-wheel.bj.bcebos.com/2.4.1/linux/linux-gpu-cuda11.2-cudnn8-mkl-gcc8.2-avx/paddlepaddle_gpu-2.4.1.post112-cp39-cp39-linux_x86_64.whl
-            pip install paddlepaddle_gpu-2.4.1.post112-cp39-cp39-linux_x86_64.whl -i https://pypi.tuna.tsinghua.edu.cn/simple
+            pip3 install paddlepaddle_gpu-2.4.1.post112-cp39-cp39-linux_x86_64.whl -i https://pypi.tuna.tsinghua.edu.cn/simple
         elif [ $number -eq 8 ]
         then
             wget -c https://paddle-wheel.bj.bcebos.com/2.4.1/linux/linux-gpu-cuda11.2-cudnn8-mkl-gcc8.2-avx/paddlepaddle_gpu-2.4.1.post112-cp38-cp38-linux_x86_64.whl
-            pip install paddlepaddle_gpu-2.4.1.post112-cp38-cp38-linux_x86_64.whl -i https://pypi.tuna.tsinghua.edu.cn/simple
+            pip3 install paddlepaddle_gpu-2.4.1.post112-cp38-cp38-linux_x86_64.whl -i https://pypi.tuna.tsinghua.edu.cn/simple
         elif [ $number -eq 7 ]
         then
             wget -c https://paddle-wheel.bj.bcebos.com/2.4.1/linux/linux-gpu-cuda11.2-cudnn8-mkl-gcc8.2-avx/paddlepaddle_gpu-2.4.1.post112-cp37-cp37m-linux_x86_64.whl
-            pip install paddlepaddle_gpu-2.4.1.post112-cp37-cp37m-linux_x86_64.whl -i https://pypi.tuna.tsinghua.edu.cn/simple
+            pip3 install paddlepaddle_gpu-2.4.1.post112-cp37-cp37m-linux_x86_64.whl -i https://pypi.tuna.tsinghua.edu.cn/simple
         elif [ $number -eq 6 ]
         then
             wget -c https://paddle-wheel.bj.bcebos.com/2.4.1/linux/linux-gpu-cuda11.2-cudnn8-mkl-gcc8.2-avx/paddlepaddle_gpu-2.4.1.post112-cp36-cp36m-linux_x86_64.whl
-            pip install paddlepaddle_gpu-2.4.1.post112-cp36-cp36m-linux_x86_64.whl -i https://pypi.tuna.tsinghua.edu.cn/simple
+            pip3 install paddlepaddle_gpu-2.4.1.post112-cp36-cp36m-linux_x86_64.whl -i https://pypi.tuna.tsinghua.edu.cn/simple
         else
             echo "您的 python 版本不支持！请确保python版本在3.6到3.10，若有疑问请联系开发者"
             echo "您现在的python版本为：$number"
             exit 0
         fi
 
-        python3 -m pip install paddlepaddle-gpu==2.4.1.post112 -f https://www.paddlepaddle.org.cn/whl/linux/mkl/avx/stable.html
+        python3 -m pip3 install paddlepaddle-gpu==2.4.1.post112 -f https://www.paddlepaddle.org.cn/whl/linux/mkl/avx/stable.html
         echo " "
         echo "Paddle GPU 版本安装完毕，接下来进行依赖库的安装"
         echo " "
         ;;
 
     [nN][oO]|[nN])
-        python3 -m pip install paddlepaddle -i https://pypi.tuna.tsinghua.edu.cn/simple
+        python3 -m pip3 install paddlepaddle -i https://pypi.tuna.tsinghua.edu.cn/simple
         echo "❀ 恭喜你完成 Paddle CPU 版本的安装，接下来开启愉快的使用把！"
         exit 0
         ;;
