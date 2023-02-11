@@ -100,7 +100,7 @@ case $input in
             echo " "
             sudo sh cuda_11.2.2_460.32.03_linux.run
         else
-            # gcc 大于等于 11 ，只编译cuda14、15以上的版本
+            # gcc 大于等于 11 ，只编译cuda11.4、11.5以上的版本
             echo "你的gcc版本为$gcc_version 只能安装CUDA>=11.4的版本"
             IF_PROBLEM2=$(a=$CUDA_VERSION b=11.4;expr $a \< $b)
             if [ $IF_PROBLEM2 -eq 1 ]
