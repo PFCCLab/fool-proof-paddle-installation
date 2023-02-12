@@ -22,11 +22,28 @@ options=("下载 Paddle 系列开源库" "安装 Paddle 及系列开源库" "退
 # Display the menu
 echo "请选择:(输入1,2或者3)"
 
+download_list=(
+    Paddle
+    PaddleSlim
+    Paddle-Lite
+    FastDeploy
+    PaddleX
+    PaddleSpeech
+    PaddleClas
+    PaddleDetection
+    PaddleSeg
+    PaddleOCR
+    PaddleNLP
+    PaddleYOLO
+    PaddleVideo
+    PaddleGAN
+)
 
 function paddle_install()
 {
 clear
-echo "请选择要安装的内容:"
+echo "请选择要安装的内容:(输入1,2或者3)"
+echo "警告：请在安装完 Paddle 后再安装套件"
 echo " "
 options2=("一键安装 Paddle 及CUDA环境" "一键安装 Paddle 套件" "退出程序")
 select optt in "${options2[@]}"
@@ -39,6 +56,42 @@ do
         break
         ;;
     "一键安装 Paddle 套件")
+        echo "开始扫描当前目录下的套件......"
+        str_ls=$(ls)
+        for i in "${download_list[@]}"
+        do
+            if [[ $i == "Paddle" ]]; then  
+            continue
+            fi
+            if [[ $i == "PaddleX" ]]; then  
+            continue
+            fi
+            if [[ $i == "PaddleX" ]]; then  
+            continue
+            fi
+            if [[ $i == "PaddleYOLO" ]]; then  
+            continue
+            fi        
+            if [[ $str_ls == *$i* ]]; then  
+            install_list+=($i)
+            fi
+        done
+        echo "即将安装以下仓库的环境到本虚拟环境："
+        for i in "${install_list[@]}"
+        do
+            echo "$i" 
+        done
+
+        DIR_PWD=$(pwd)
+        for i in "${install_list[@]}"
+        do
+            cd $DIR_PWD
+            cp ./src/"$i.sh"  ./"$i"
+            cd $i
+            bash "$i.sh"
+        done
+
+        echo "恭喜你安装完所有套件，开始快乐的使用吧！"
         break        
         ;;       
     "退出程序")
@@ -46,7 +99,6 @@ do
     esac     
 done
 }
-
 
 select opt in "${options[@]}"
 do
