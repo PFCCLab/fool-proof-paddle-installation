@@ -134,7 +134,7 @@ case $input in
         ;;
 esac
 
-
+source ~/.bashrc
 echo " "
 ls /usr/local | grep cuda
 nvcc -V
@@ -207,6 +207,9 @@ echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/targets/x86_64-lin
 source ~/.bashrc
 echo "验证是否成功，打印nvcc信息"
 nvcc -V
+echo "如果没有打印，请在程序结束后自行输入 source ~/.bashrc ，随后进入环境再次运行下列命令行即可"
+echo "python3 -c "import paddle;paddle.utils.run_check()""
+echo "若还是错误，请联系开发人员"
 echo " "
 echo "最后验证安装是否成功，请稍后......"
 python3 -c "import paddle;paddle.utils.run_check()"
