@@ -1,7 +1,8 @@
+#!/bin/bash
 echo "====== 欢迎使用 Paddle 全自动安装与环境配置工具 ======"
 
 echo "初始环境配置中，请输入密码......"
-sudo apt update
+# sudo apt update
 sudo apt -y install wget gcc g++  python3-pip
 python3 -m pip3 install --upgrade pip3
 python3 -m pip install --upgrade pip
@@ -136,11 +137,11 @@ case $input in
         exit 0
         ;;
 esac
-
+echo 'export PATH=/usr/local/cuda/bin:$PATH' >> ~/.bashrc
 source ~/.bashrc
 echo " "
 ls /usr/local | grep cuda
-nvcc -V
+echo " "
 echo "若上述出现CUDA，则CUDA安装完成，如果没有出现，请检查是否运行了CUDA安装脚本！"
 echo " "
 echo "恭喜你来到最后一步，接下来将安装CUDNN与配置环境"
@@ -202,19 +203,9 @@ sudo cp include/* /usr/local/cuda/include/
 echo " "
 echo "验证是否安装成功（此时你应该看到有多个CUDNN_MAJOR类似字样）"
 cat /usr/local/cuda/include/cudnn_version.h | grep CUDNN_MAJOR -A 2
-echo 'export PATH=/usr/local/cuda/bin:$PATH' >> ~/.bashrc
 echo 'export LD_LIBRARY_PATH="/usr/local/cuda/lib64:$LD_LIBRARY_PATH"' >> ~/.bashrc
 echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/targets/x86_64-linux/lib' >> ~/.bashrc
 echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/targets/x86_64-linux/lib/stubs/' >> ~/.bashrc
 
 source ~/.bashrc
-echo "验证是否成功，打印nvcc信息"
-nvcc -V
-echo "如果没有打印，请在程序结束后自行输入 source ~/.bashrc ，随后进入环境再次运行下列命令行即可"
-echo "python3 -c "import paddle;paddle.utils.run_check()""
-echo "若还是错误，请联系开发人员"
-echo " "
-echo "最后验证安装是否成功，请稍后......"
-python3 -c "import paddle;paddle.utils.run_check()"
-echo " "
-echo "❀ 恭喜你完成环境配置，接下来请根据喜好安装 paddle 套件"
+

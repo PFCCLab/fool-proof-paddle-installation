@@ -53,6 +53,23 @@ do
         cp ./src/auto_install_paddle.sh  ./
         bash auto_install_paddle.sh
         rm ./auto_install_paddle.sh
+        source ~/.bashrc
+        echo "验证是否成功，打印nvcc信息"
+        nvcc -V
+        echo "如果没有打印，请在程序结束后自行输入 source ~/.bashrc"
+        echo " "
+        echo "====最后验证安装是否成功，请你进入安装环境下运行下列命令行===="
+        echo "python3 -c 'import paddle;paddle.utils.run_check()'"
+        echo " "        
+        echo '''如果成功，你能看到如下显示:
+PaddlePaddle works well on 1 GPU.
+PaddlePaddle works well on 1 GPUs.
+PaddlePaddle is installed successfully! Lets start deep learning with PaddlePaddle now.
+             '''
+        echo "如发现错误，请联系开发人员"
+        echo " "
+        echo "❀ 恭喜你完成环境配置，接下来请根据喜好安装 paddle 套件"
+        echo " "
         break
         ;;
     "一键安装 Paddle 套件")
