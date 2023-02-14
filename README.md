@@ -5,7 +5,8 @@ You can use this foolproof tool to download and install PADDLE automatically.
 
 目前已支持linux环境下的 Paddle 和套件的安装。
 
-你只需要运行`bash main.sh`然后根据提示操作即可.
+你只需要运行`source main.sh`然后根据提示操作即可.
+【注意，如果你使用`bash main.sh`，那么在安装结束后请自行`source ~/.bashrc`一次才能看到`nvcc -V`的结果并成功运行paddle。
 
 ubuntu20.04 22.04 wsl下完美测试通过。
 
