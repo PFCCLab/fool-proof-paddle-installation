@@ -3,6 +3,8 @@ echo "请确保在 PaddleNLP 目录下运行此脚本"
 echo " "
 
 echo "开始安装依赖，请等待"
+
+pip install setuptools_scm
 pip install --upgrade paddlenlp -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 echo "恭喜安装成功，接下来进行验证安装测试"
