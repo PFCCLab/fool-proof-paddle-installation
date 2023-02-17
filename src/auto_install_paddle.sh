@@ -6,6 +6,8 @@ echo "初始环境配置中，请输入密码......"
 sudo apt -y install wget gcc g++  python3-pip
 pip3 install --upgrade pip3
 pip install --upgrade pip
+python3 -m pip3 install --upgrade pip3
+python3 -m pip install --upgrade pip
 
 echo "配置完毕，接下来开始GPU库的安装，请确保你已经安装好驱动"
 
