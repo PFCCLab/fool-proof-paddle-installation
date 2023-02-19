@@ -10,7 +10,6 @@ def cuda_version_detect():
         print("\n没有检测到驱动，请检查！")
         exit()
     else:
-        pass
         match = re.search(pattern, result)
         if match:
             cuda_version=match.group(1)
@@ -18,21 +17,22 @@ def cuda_version_detect():
             print("CUDA驱动可能存在问题，请联系开发")
             exit()
         if float(cuda_version) < 11.2:
-            print("你的CUDA驱动版本过低，无法支持最新paddle，请重新安装大于11.2的版本！")       
+            print("你的CUDA驱动版本过低，无法支持最新paddle，请重新安装大于11.2的版本！")   
             exit()
 
 def cuda_install():
-    print("开始下载 CUDA，请等待。。。。")
+    print("开始下载 CUDA，请等待.......")
     url = "https://developer.download.nvidia.com/compute/cuda/11.2.2/local_installers/cuda_11.2.2_461.33_win10.exe"
     filePath = "cuda_11.2.2_461.33_win10.exe"
     command = f"powershell Invoke-WebRequest -Uri {url} -OutFile {filePath}"
-    
+    os.system(command)
     if os.path.isfile("cuda_11.2.2_461.33_win10.exe"):
         print("接下来开始安装")
         os.popen("cuda_11.2.2_461.33_win10.exe")
     else:
         print("未检测到CUDA安装文件，请重新运行下载或手动下载后安装")
         print("https://developer.download.nvidia.com/compute/cuda/11.2.2/local_installers/cuda_11.2.2_461.33_win10.exe")
+        exit()
 
     
     CUDA_if_install = input("请在安装完成后继续，你是否已经安装好CUDA [Y/y]")
@@ -50,7 +50,7 @@ def cuda_install():
 def cudnn_install():
     print("\n请ctrl+左键点击网页自行登录并下载CUDNN并把压缩包放到当前目录下：")
     print("https://developer.nvidia.com/downloads/c118-cudnn-windows-8664-880121cuda11-archivezip")
-    CUDNN_if_zip = input("你是否已经解压好CUDNN压缩包 [Y/y]（完成后再选择）")
+    CUDNN_if_zip = input("你是否已经下载好CUDNN压缩包，并将其移动到当前目录下 [Y/y]（完成后再选择）")
     if CUDNN_if_zip in ["Y","y","yes","YES"]:
         print("开始自动解压......")
         os.system("powershell Expand-Archive -Path cudnn-windows-x86_64-8.8.0.121_cuda11-archive.zip -DestinationPath .")
@@ -90,20 +90,23 @@ def main_install():
     print("=====欢迎你使用 paddle windows 自动安装及环境配置工具=====\n\n")
     if_gpu = input("你是否想要安装GPU版本的paddle？[Y]，选择其他默认安装CPU版")
     os.system('pip install --upgrade pip')
+
     if if_gpu in ["Y","y","yes","YES"]:
         print("开始安装GPU版本的paddle并进行环境配置安装")
+        paddle_install()
     else:
         print("开始安装CPU版本的paddle")
         _do_install(["paddlepaddle"])
-        print("安装GPU版paddle完毕！请开始你的使用之旅")
+        print("安装CPU版paddle完毕！请开始你的使用之旅")
         exit()
     cuda_version_detect()
     cuda_install()
     cudnn_install()
-    paddle_install()
     print("安装GPU版paddle完毕！请开始你的使用之旅")
-    print("====最后验证安装是否成功，请你进入安装环境下运行下列命令行====")
-    print("python3 -c 'import paddle;paddle.utils.run_check()'")
+    print("====最后验证安装是否成功====")
+    os.system("python -c 'import paddle;paddle.utils.run_check()'")
+    print("如果未成功，请尝试退出终端后重新输入 python -c 'import paddle;paddle.utils.run_check()' ")
+    print("如果还发生异常，请联系开发人员，祝你使用愉快！")
 
 def _do_install(pkgs):
     try:
