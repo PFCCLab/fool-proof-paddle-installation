@@ -31,6 +31,7 @@ def cuda_install():
         os.popen("cuda_11.2.2_461.33_win10.exe")
     else:
         print("未检测到CUDA安装文件，请重新运行下载或手动下载后安装")
+        print("https://developer.download.nvidia.com/compute/cuda/11.2.2/local_installers/cuda_11.2.2_461.33_win10.exe")
         exit()
 
     
@@ -96,13 +97,16 @@ def main_install():
     else:
         print("开始安装CPU版本的paddle")
         _do_install(["paddlepaddle"])
-    print("安装GPU版paddle完毕！请开始你的使用之旅")
+        print("安装CPU版paddle完毕！请开始你的使用之旅")
+        exit()
     cuda_version_detect()
     cuda_install()
     cudnn_install()
     print("安装GPU版paddle完毕！请开始你的使用之旅")
     print("====最后验证安装是否成功====")
     os.system("python -c 'import paddle;paddle.utils.run_check()'")
+    print("如果未成功，请尝试退出终端后重新输入 python -c 'import paddle;paddle.utils.run_check()' ")
+    print("如果还发生异常，请联系开发人员，祝你使用愉快！")
 
 def _do_install(pkgs):
     try:
