@@ -17,22 +17,21 @@ def cuda_version_detect():
             print("CUDA驱动可能存在问题，请联系开发")
             exit()
         if float(cuda_version) < 11.2:
-            print("你的CUDA驱动版本过低，无法支持最新paddle，请重新安装大于11.2的版本！")
-            cuda_install()       
+            print("你的CUDA驱动版本过低，无法支持最新paddle，请重新安装大于11.2的版本！")   
             exit()
 
 def cuda_install():
-    
+    print("开始下载 CUDA，请等待.......")
+    url = "https://developer.download.nvidia.com/compute/cuda/11.2.2/local_installers/cuda_11.2.2_461.33_win10.exe"
+    filePath = "cuda_11.2.2_461.33_win10.exe"
+    command = f"powershell Invoke-WebRequest -Uri {url} -OutFile {filePath}"
+    os.system(command)
     if os.path.isfile("cuda_11.2.2_461.33_win10.exe"):
         print("接下来开始安装")
         os.popen("cuda_11.2.2_461.33_win10.exe")
     else:
         print("未检测到CUDA安装文件，请重新运行下载或手动下载后安装")
-        print("开始下载 CUDA，请等待。。。。")
-        url = "https://developer.download.nvidia.com/compute/cuda/11.2.2/local_installers/cuda_11.2.2_461.33_win10.exe"
-        filePath = "cuda_11.2.2_461.33_win10.exe"
-        command = f"powershell Invoke-WebRequest -Uri {url} -OutFile {filePath}"
-        os.system(command)
+        exit()
 
     
     CUDA_if_install = input("请在安装完成后继续，你是否已经安装好CUDA [Y/y]")
