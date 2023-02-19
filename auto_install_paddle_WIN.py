@@ -50,7 +50,7 @@ def cuda_install():
 def cudnn_install():
     print("\n请ctrl+左键点击网页自行登录并下载CUDNN并把压缩包放到当前目录下：")
     print("https://developer.nvidia.com/downloads/c118-cudnn-windows-8664-880121cuda11-archivezip")
-    CUDNN_if_zip = input("你是否已经解压好CUDNN压缩包 [Y/y]（完成后再选择）")
+    CUDNN_if_zip = input("你是否已经下载好CUDNN压缩包，并将其移动到当前目录下 [Y/y]（完成后再选择）")
     if CUDNN_if_zip in ["Y","y","yes","YES"]:
         print("开始自动解压......")
         os.system("powershell Expand-Archive -Path cudnn-windows-x86_64-8.8.0.121_cuda11-archive.zip -DestinationPath .")
@@ -102,8 +102,8 @@ def main_install():
     cuda_install()
     cudnn_install()
     print("安装GPU版paddle完毕！请开始你的使用之旅")
-    print("====最后验证安装是否成功，请你进入安装环境下运行下列命令行====")
-    print("python3 -c 'import paddle;paddle.utils.run_check()'")
+    print("====最后验证安装是否成功====")
+    os.system("python -c 'import paddle;paddle.utils.run_check()'")
 
 def _do_install(pkgs):
     try:
