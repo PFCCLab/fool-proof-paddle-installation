@@ -25,7 +25,7 @@ def cuda_install():
     print("开始下载 CUDA，请等待。。。。")
     url = "https://developer.download.nvidia.com/compute/cuda/11.2.2/local_installers/cuda_11.2.2_461.33_win10.exe"
     filePath = "cuda_11.2.2_461.33_win10.exe"
-    command = f"Invoke-WebRequest -Uri {url} -OutFile {filePath}"
+    command = f"powershell Invoke-WebRequest -Uri {url} -OutFile {filePath}"
     
     if os.path.isfile("cuda_11.2.2_461.33_win10.exe"):
         print("接下来开始安装")
