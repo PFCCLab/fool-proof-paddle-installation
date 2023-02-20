@@ -87,15 +87,8 @@ def cudnn_install():
         # 确保已经解压成功
         if os.path.isdir("cudnn-windows-x86_64-8.8.0.121_cuda11-archive/lib") and os.path.isdir("cudnn-windows-x86_64-8.8.0.121_cuda11-archive"):
             print("接下来开始安装")
-            pwd = os.getcwd()
-            src = '"'+f"{pwd}\cudnn-windows-x86_64-8.8.0.121_cuda11-archive\*"+'"'
-            dst = '"`"'+f"{CUDA_PATH}"+'`""'
-            print(src)
-            # print(f"powershell Start-Process -FilePath powershell -Verb RunAs -Wait -ArgumentList \"Copy-Item\",\"-Path\",\".\cudnn-windows-x86_64-8.8.0.121_cuda11-archive\*\",\"-Recurse\",\'C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.2\',\"-Force\"")
-            # os.system(f"powershell Start-Process -FilePath powershell -Verb RunAs -Wait -ArgumentList \"Copy-Item\",\"-Path\",\".\cudnn-windows-x86_64-8.8.0.121_cuda11-archive\*\",\"-Recurse\",\'C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.2\',\"-Force\"")
-            print(f"powershell Start-Process -FilePath powershell -Verb RunAs -ArgumentList \"cp\",{src},\"-Recurse\",{dst}")
-            os.system(f"powershell Start-Process -FilePath powershell -Verb RunAs -ArgumentList \"cp\",{src},\"-Recurse\",{dst}")
-            # os.system(f"Copy-Item -Path {src} -Recurse {dst} -Force")
+            os.system("powershell Start-Process -FilePath \"python\" -Verb RunAs -ArgumentList \"copy_cudnn.py\"")
+            
         else:
             print("未检测到CUDNN安装文件夹，自动解压失败，请自行解压放到文件夹下")
             print("当前目录下有的文件：")
