@@ -122,7 +122,8 @@ def main_install():
     print("=====欢迎你使用 paddle windows 自动安装及环境配置工具=====\n\n")
     if_gpu = input("你是否想要安装GPU版本的paddle？[Y]，选择其他默认安装CPU版")
     if_paddle_install = find_spec("paddle")
-    os.system('pip install --upgrade pip')
+    os.system('python.exe -m pip install --upgrade pip')
+
     
     if if_gpu in ["Y","y","yes","YES"]:
         print("开始安装GPU版本的paddle并进行环境配置安装")
