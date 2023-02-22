@@ -75,17 +75,17 @@ def cudnn_install():
     CUDA_PATH = os.environ.get("CUDA_PATH")
 
     print("\n请ctrl+左键点击网页自行登录并下载CUDNN并把压缩包放到当前目录下：")
-    print("https://developer.nvidia.com/downloads/c118-cudnn-windows-8664-880121cuda11-archivezip")
+    print("https://developer.nvidia.com/compute/machine-learning/cudnn/secure/8.2.1.32/11.3_06072021/cudnn-11.3-windows-x64-v8.2.1.32.zip")
     CUDNN_if_zip = input("你是否已经下载好CUDNN压缩包，并将其移动到当前目录下 [Y/y]（完成后再选择）")
     if CUDNN_if_zip in ["Y","y","yes","YES"]:
         print("开始自动解压......")
-        if os.path.isdir("cudnn-windows-x86_64-8.8.0.121_cuda11-archive/lib") and os.path.isdir("cudnn-windows-x86_64-8.8.0.121_cuda11-archive"):
+        if os.path.isdir("cuda/lib") and os.path.isdir("cuda"):
             pass
         else:   
-            os.system("powershell Expand-Archive -Path cudnn-windows-x86_64-8.8.0.121_cuda11-archive.zip -DestinationPath .")
+            os.system("powershell Expand-Archive -Path cudnn-11.3-windows-x64-v8.2.1.32.zip -DestinationPath .")
         
         # 确保已经解压成功
-        if os.path.isdir("cudnn-windows-x86_64-8.8.0.121_cuda11-archive/lib") and os.path.isdir("cudnn-windows-x86_64-8.8.0.121_cuda11-archive"):
+        if os.path.isdir("cuda/lib") and os.path.isdir("cuda"):
             print("接下来开始安装")
             os.system("powershell Start-Process -FilePath \"python\" -Verb RunAs -ArgumentList \"copy_cudnn.py\"")
             
@@ -142,8 +142,8 @@ def main_install():
     cudnn_install()
     print("安装GPU版paddle完毕！请开始你的使用之旅")
     print("====最后验证安装是否成功====")
-    os.system("powershell python -c 'import paddle;paddle.utils.run_check()'")
-    print("如果未成功，请尝试退出终端后重新输入 powershell python -c 'import paddle;paddle.utils.run_check()' ")
+    os.system('python -c "import paddle;paddle.utils.run_check()"')
+    print('如果未成功，请尝试退出终端后重新输入 python -c "import paddle;paddle.utils.run_check()"')
     print("如果还发生异常，请联系开发人员，祝你使用愉快！")
 
 def _do_install(pkgs):
