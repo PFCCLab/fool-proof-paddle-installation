@@ -13,4 +13,4 @@ ubuntu20.04 22.04 wsl下完美测试通过。
 AIstudio地址：
 https://aistudio.baidu.com/aistudio/projectdetail/5448389
 
-之后会迭代加入windows的一键下载和配置工具
+如果你想在windows环境下安装paddle，请运行：python auto_install_paddle_WIN.py 即可
