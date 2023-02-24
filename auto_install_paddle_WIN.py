@@ -76,7 +76,7 @@ def cudnn_install():
 
     print("\n请ctrl+左键点击网页自行登录并下载CUDNN并把压缩包放到当前目录下：")
     print("https://developer.nvidia.com/compute/machine-learning/cudnn/secure/8.2.1.32/11.3_06072021/cudnn-11.3-windows-x64-v8.2.1.32.zip")
-    CUDNN_if_zip = input("你是否已经下载好CUDNN压缩包，并将其移动到当前目录下 [Y/y]（完成后再选择）")
+    CUDNN_if_zip = input("你是否已经下载好CUDNN压缩包，并将其移动到当前目录下 [Y/y]（完成后再选择，否则直接进入下一步）")
     if CUDNN_if_zip in ["Y","y","yes","YES"]:
         print("开始自动解压......")
         if os.path.isdir("cuda/lib") and os.path.isdir("cuda"):
@@ -103,6 +103,98 @@ def paddle_install():
 
 
 def main_install():
+    if_gpu = input("你是否想要安装GPU版本的paddle？[Y]，选择其他默认安装CPU版")
+    if_paddle_install = True
+    try:
+        import paddle
+    except:
+        if_paddle_install = False
+    
+    os.system('pip install --upgrade pip')
+    
+    if if_gpu in ["Y","y","yes","YES"]:
+        print("开始安装GPU版本的paddle并进行环境配置安装")
+        if if_paddle_install:
+            print("检测到 paddle 已安装,进入CUDA安装环节")
+        else:
+            paddle_install()
+    
+    else:
+        print("开始安装CPU版本的paddle")
+        _do_install(["paddlepaddle"])
+        print("安装CPU版paddle完毕！请开始你的使用之旅")
+        exit()
+    cuda_version_detect()
+    cuda_install()
+    cudnn_install()
+    print("安装GPU版paddle完毕！请开始你的使用之旅")
+    print("====最后验证安装是否成功====")
+    os.system("python -c 'import paddle;paddle.utils.run_check()'")
+    print("如果未成功，请尝试退出终端后重新输入 python -c 'import paddle;paddle.utils.run_check()' ")
+    print("如果还发生异常，请联系开发人员，祝你使用愉快！")
+
+def _do_install(pkgs):
+    try:
+        from pip._internal import main
+    except Exception:
+        from pip import main
+    return main(['install'] + pkgs)
+
+# 套件的下载与安装
+
+def download_PaddlePaddle():
+    osresult = os.system('start "" "%ProgramFiles%\Git\git-bash.exe" -c "echo 1 "')
+    if osresult ==1:
+        print("未安装git bash或git bash安装地址不对，如果一路next仍报错请联系开发人员")
+
+        if not os.path.isfile(""):
+            print("开始下载git bash安装程序")
+            url = "https://registry.npmmirror.com/-/binary/git-for-windows/v2.39.0.windows.2/Git-2.39.0.2-64-bit.exe"
+            filePath = "Git-2.39.0.2-64-bit.exe"
+            command = f"powershell Invoke-WebRequest -Uri {url} -OutFile {filePath}"
+            os.system(command)
+
+        print("开始安装git bash, 请一路next即可")
+        os.system("Git-2.39.0.2-64-bit.exe")
+        print("安装完毕后，请关闭当前终端，重新运行即可启动一键下载功能！")
+    
+    os.system('start "" "%ProgramFiles%\Git\git-bash.exe" -c "bash ./src/download_paddle.sh "')
+    print("恭喜下载完毕，请开始接下来的安装！")
+    
+    
+
+def install_PaddlePaddle():
+    download_list=[
+        "PaddleSlim",
+        "FastDeploy",
+        "PaddleSpeech",
+        "PaddleClas",
+        "PaddleDetection",
+        "PaddleSeg",
+        "PaddleOCR",
+        "PaddleNLP",
+        "PaddleVideo",
+        "PaddleGAN",
+    ]
+    print("开始扫描当前目录下的套件......")
+    install_list = []
+    dirs = os.listdir(".")
+    for i in dirs:
+        if i in download_list:
+            install_list.append(i)
+    
+    print("即将安装以下仓库的环境到本虚拟环境：")
+    if install_list == []:
+        print("未搜索到任何库，请下载后重试！")
+        print("当前路径下的文件为：",os.listdir("."))
+        exit()
+
+    for i in install_list:
+        print(i)
+
+
+
+if __name__ == "__main__":
     os.system("cls")
     welcome_str = """
       ___         ___          _____         _____                        ___     
@@ -119,40 +211,42 @@ def main_install():
 
     """
     print(welcome_str)
-    print("=====欢迎你使用 paddle windows 自动安装及环境配置工具=====\n\n")
-    if_gpu = input("你是否想要安装GPU版本的paddle？[Y]，选择其他默认安装CPU版")
-    if_paddle_install = find_spec("paddle")
-    os.system('python.exe -m pip install --upgrade pip')
+    print("欢迎你使用 Paddle 全家桶一键下载&CUDA环境配置及套件安装工具！")
+    print("请选择:(输入1,2或者3)")
+    print("（1）下载 Paddle 系列开源库\n（2）安装 Paddle 及系列开源库\n（3）退出程序")
 
-    
-    if if_gpu in ["Y","y","yes","YES"]:
-        print("开始安装GPU版本的paddle并进行环境配置安装")
-        if if_paddle_install != None:
-            print("检测到 paddle 已安装,进入CUDA安装环节")
+    while True:
+        option = input()
+        if option == "1":
+            os.system("cls")
+            download_PaddlePaddle()
+            exit()
+        elif option =="2":
+            os.system("cls")
+            print ("请选择要安装的内容:(输入1,2或者3)")
+            print ("警告：请在安装完 Paddle 后再安装套件")
+            print ("（1）一键安装 Paddle 及CUDA环境\n（2）一键安装 Paddle 套件\n（3）退出程序")
+            while True:
+                option = input()
+                if option == "1":
+                    os.system("cls")
+                    main_install()
+                    exit()
+                elif option =="2":
+                    os.system("cls")
+                    install_PaddlePaddle()
+                    exit()
+                elif option =="3":
+                    os.system("cls")
+                    print("再见，祝你有美好的一天！")
+                    exit()
+                else:
+                    continue
+        elif option =="3":
+            os.system("cls")
+            print("再见，祝你有美好的一天！")
+            exit()
         else:
-            paddle_install()
+            continue
     
-    else:
-        print("开始安装CPU版本的paddle")
-        _do_install(["paddlepaddle"])
-        print("安装CPU版paddle完毕！请开始你的使用之旅")
-        exit()
-    cuda_version_detect()
-    cuda_install()
-    cudnn_install()
-    print("安装GPU版paddle完毕！请开始你的使用之旅")
-    print("====最后验证安装是否成功====")
-    os.system('python -c "import paddle;paddle.utils.run_check()"')
-    print('如果未成功，请尝试退出终端后重新输入 python -c "import paddle;paddle.utils.run_check()"')
-    print("如果还发生异常，请联系开发人员，祝你使用愉快！")
-
-def _do_install(pkgs):
-    try:
-        from pip._internal import main
-    except Exception:
-        from pip import main
-    return main(['install'] + pkgs)
-
-if __name__ == "__main__":
-    main_install()
     
