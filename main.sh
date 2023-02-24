@@ -17,7 +17,7 @@ echo '''
 
 
 '''
-echo "欢迎你使用 Paddle 全家桶一键下载&CUDA环境配置及套件安装工具！"
+echo "欢迎你使用 Linux-Paddle 全家桶一键下载&CUDA环境配置及套件安装工具！"
 options=("下载 Paddle 系列开源库" "安装 Paddle 及系列开源库" "退出程序")
 # Display the menu
 echo "请选择:(输入1,2或者3)"

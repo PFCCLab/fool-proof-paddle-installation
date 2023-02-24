@@ -1,7 +1,7 @@
 import os
 import re
 from importlib.util import find_spec
-import paddle_tools
+import src.paddle_tools
 import sys
 
 download_list=[
@@ -182,7 +182,7 @@ def install_PaddlePaddle():
     # 批量导入模块方法
     install_dict = {}
     for i in download_list:
-        install_dict[i] = getattr(paddle_tools,i)
+        install_dict[i] = getattr(src.paddle_tools,i)
 
     print("开始扫描当前目录下的套件......")
     install_list = []
@@ -220,7 +220,7 @@ if __name__ == "__main__":
 
     """
     print(welcome_str)
-    print("欢迎你使用 Paddle 全家桶一键下载&CUDA环境配置及套件安装工具！")
+    print("欢迎你使用 Windows-Paddle 全家桶一键下载&CUDA环境配置及套件安装工具！")
     print("windows环境下请使用python3.7安装！推荐使用anaconda或miniconda：")
     print("https://mirrors.bfsu.edu.cn/anaconda/miniconda/Miniconda3-py37_23.1.0-1-Windows-x86_64.exe")
     print("请选择:(输入1,2或者3)")

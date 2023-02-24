@@ -1,4 +1,4 @@
-"""TODO：之后可以考虑分发的形式，具体安装由下游实现，上层规定一些常用接口。"""
+"""TODO：之后可以考虑OOP分发的形式，具体安装由下游实现，上层规定一些常用接口。"""
 import sys
 import os
 my_python_exe = sys.executable
@@ -14,7 +14,25 @@ def FastDeploy():
 
 def PaddleSpeech():
     cd_dst_dir = f"cd {pwd}\{sys._getframe().f_code.co_name} && "
-    print(f"暂未支持{sys._getframe().f_code.co_name} ，请等待！")
+    print("开始安装依赖，请等待")
+    os.system(f"{cd_dst_dir}{my_python_exe} -m pip install pytest-runner")
+    os.system(f"{cd_dst_dir}{my_python_exe} -m pip install .")
+    print("恭喜安装成功，接下来进行验证安装测试")
+    os.system(f"{cd_dst_dir}powershell wget -c https://paddlespeech.bj.bcebos.com/PaddleAudio/zh.wav")
+    print ("-> 运行语音识别测试验证")
+    print ("若出现'我认为跑步最重要的就是给我带来了身体健康'则表示成功")
+    os.system(f"{cd_dst_dir}paddlespeech asr --lang zh --input zh.wav")
+
+    print ("-> 进行标点符号补全验证")
+    print ("输入：今天的天气真不错啊你下午有空吗我想约你一起去吃饭")
+    os.system(f"{cd_dst_dir}paddlespeech text --task punc --input\
+               今天的天气真不错啊你下午有空吗我想约你一起去吃饭")
+    print ("-> 进行声音分类验证")
+    print ("若出现置信度则表示成功")
+    os.system(f"{cd_dst_dir}paddlespeech cls --input zh.wav")
+
+    print ("若上面测试都能出现预期结果，则通过测试")
+    print ("❀ 恭喜你完成  PaddleSpeech 的安装与验证，开始愉快的使用吧！")
 
 def PaddleClas():
     cd_dst_dir = f"cd {pwd}\{sys._getframe().f_code.co_name} && "
@@ -107,7 +125,15 @@ def PaddleNLP():
 
 def PaddleVideo():
     cd_dst_dir = f"cd {pwd}\{sys._getframe().f_code.co_name} && "
-    print(f"暂未支持{sys._getframe().f_code.co_name} ，请等待！")
+    print ("开始安装依赖，请等待")
+    os.system(f'{cd_dst_dir}{my_python_exe} -m pip install ppvideo -i https://pypi.tuna.tsinghua.edu.cn/simple')
+    if_gpu = input("接下来要进行安装测试，请问你是否选择在CPU上测试？[Y/y],选择其他则在GPU上执行")
+    if if_gpu in ["Y","y","yes","YES"]:
+        use_gpu = "False"
+    else:
+        use_gpu = "True"
+    os.system(f'{cd_dst_dir}ppvideo --model_name="ppTSM_v2" --use_gpu={use_gpu} --video_file="data/example.avi"')
+    print("❀ 若出现'archery'识别结果，则恭喜你完成  PaddleVideo 的安装！开始你的快乐使用吧 ❀")
 
 def PaddleGAN():
     cd_dst_dir = f"cd {pwd}\{sys._getframe().f_code.co_name} && "
