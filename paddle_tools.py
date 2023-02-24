@@ -27,6 +27,25 @@ def PaddleClas():
 def PaddleDetection():
     cd_dst_dir = f"cd {pwd}\{sys._getframe().f_code.co_name} && "
     print("开始安装依赖，请等待")
+    print("注意！在安装ppdet之前，你需要安装c++生成工具，你是否需要安装？[y/Y] 选择其他默认安装了")
+    print("若未安装完成，你将遇到 building 'pycocotools._mask' extension 编译问题！")
+    if_cpp = input("")
+    if if_cpp in ["Y","y","yes","YES"]:
+        print("开始下载并安装：")
+        url = "https://aka.ms/vs/17/release/vs_BuildTools.exe"
+        filePath = "vs_BuildTools.exe"
+        command = f"powershell Invoke-WebRequest -Uri {url} -OutFile {filePath}"
+        os.system(command)    
+        print("请选择安装界面左上角的C++桌面程序，然后一路安装等待完毕即可~")
+        os.system("vs_BuildTools.exe")
+        while True:
+            if_install = input("你是否已经安装完毕？[y/Y] 请安装完成再选择！")
+            if if_install in ["Y","y","yes","YES"]:
+                break
+            else:
+                print("输入错误！")
+
+    os.system(f"{cd_dst_dir}{my_python_exe} -m pip install pyyaml")
     os.system(f"{cd_dst_dir}{my_python_exe} -m pip install -r requirements.txt  -i https://pypi.tuna.tsinghua.edu.cn/simple")
     print("开始编译安装paddledet")
     os.system(f"{cd_dst_dir}{my_python_exe} setup.py install")
@@ -51,11 +70,11 @@ def PaddleSeg():
     os.system(f'{cd_dst_dir}{my_python_exe} -m pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple')
     os.system(f'{cd_dst_dir}{my_python_exe} -m pip install -v -e .')
     print("恭喜安装成功，接下来进行验证安装测试")
-    infer_test = f"{cd_dst_dir}{my_python_exe} tools/predict.py \
-                        --config configs/quick_start/pp_liteseg_optic_disc_512x512_1k.yml \
+    infer_test = fr"{cd_dst_dir}{my_python_exe} tools\predict.py \
+                        --config configs\quick_start\pp_liteseg_optic_disc_512x512_1k.yml \
                         --model_path https://paddleseg.bj.bcebos.com/dygraph/optic_disc/pp_liteseg_optic_disc_512x512_1k/model.pdparams \
-                        --image_path docs/images/optic_test_image.jpg \
-                        --save_dir output/result"
+                        --image_path docs\images\optic_test_image.jpg \
+                        --save_dir output\result"
     os.system(infer_test)
     print("❀ 若没有报错，则恭喜你完成  PaddleSeg 的安装！开始你的快乐使用吧 ❀")
     pass
@@ -77,7 +96,14 @@ def PaddleOCR():
 
 def PaddleNLP():
     cd_dst_dir = f"cd {pwd}\{sys._getframe().f_code.co_name} && "
-    print(f"暂未支持{sys._getframe().f_code.co_name} ，请等待！")
+    os.system(f'{cd_dst_dir}{my_python_exe} -m pip install setuptools_scm')
+    os.system(f'{cd_dst_dir}{my_python_exe} -m pip install --upgrade paddlenlp -i https://pypi.tuna.tsinghua.edu.cn/simple')
+    print("恭喜安装成功，接下来进行验证安装测试")
+    from paddlenlp import Taskflow
+    schema = ['时间', '选手', '赛事名称']
+    ie = Taskflow('information_extraction', schema=schema)
+    print(ie('2月8日上午北京冬奥会自由式滑雪女子大跳台决赛中中国选手谷爱凌以188.25分获得金牌!'))
+    print("❀ 若出现识别结果，则恭喜你完成 PaddleNLP 的安装！开始你的快乐使用吧 ❀")
 
 def PaddleVideo():
     cd_dst_dir = f"cd {pwd}\{sys._getframe().f_code.co_name} && "

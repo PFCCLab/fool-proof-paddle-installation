@@ -1,6 +1,21 @@
 import os
 import re
 from importlib.util import find_spec
+import paddle_tools
+import sys
+
+download_list=[
+    "PaddleSlim",
+    "FastDeploy",
+    "PaddleSpeech",
+    "PaddleClas",
+    "PaddleDetection",
+    "PaddleSeg",
+    "PaddleOCR",
+    "PaddleNLP",
+    "PaddleVideo",
+    "PaddleGAN",
+]
 
 def cuda_version_detect():
     print("接下来检查CUDA驱动情况：")
@@ -110,7 +125,7 @@ def main_install():
     except:
         if_paddle_install = False
     
-    os.system('pip install --upgrade pip')
+    os.system(f'{sys.executable} -m pip install --upgrade pip')
     
     if if_gpu in ["Y","y","yes","YES"]:
         print("开始安装GPU版本的paddle并进行环境配置安装")
@@ -138,7 +153,7 @@ def _do_install(pkgs):
         from pip._internal import main
     except Exception:
         from pip import main
-    return main(['install'] + pkgs)
+    return main(['install'] + pkgs+["-i"]+["https://pypi.tuna.tsinghua.edu.cn/simple"])
 
 # 套件的下载与安装
 
@@ -164,18 +179,11 @@ def download_PaddlePaddle():
     
 
 def install_PaddlePaddle():
-    download_list=[
-        "PaddleSlim",
-        "FastDeploy",
-        "PaddleSpeech",
-        "PaddleClas",
-        "PaddleDetection",
-        "PaddleSeg",
-        "PaddleOCR",
-        "PaddleNLP",
-        "PaddleVideo",
-        "PaddleGAN",
-    ]
+    # 批量导入模块方法
+    install_dict = {}
+    for i in download_list:
+        install_dict[i] = getattr(paddle_tools,i)
+
     print("开始扫描当前目录下的套件......")
     install_list = []
     dirs = os.listdir(".")
@@ -191,6 +199,7 @@ def install_PaddlePaddle():
 
     for i in install_list:
         print(i)
+        install_dict[i]()
 
 
 
@@ -212,6 +221,8 @@ if __name__ == "__main__":
     """
     print(welcome_str)
     print("欢迎你使用 Paddle 全家桶一键下载&CUDA环境配置及套件安装工具！")
+    print("windows环境下请使用python3.7安装！推荐使用anaconda或miniconda：")
+    print("https://mirrors.bfsu.edu.cn/anaconda/miniconda/Miniconda3-py37_23.1.0-1-Windows-x86_64.exe")
     print("请选择:(输入1,2或者3)")
     print("（1）下载 Paddle 系列开源库\n（2）安装 Paddle 及系列开源库\n（3）退出程序")
 
