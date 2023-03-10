@@ -3,6 +3,7 @@ import re
 from importlib.util import find_spec
 import src.paddle_tools
 import sys
+my_python_exe = sys.executable
 
 download_list=[
     "PaddleSlim",
@@ -144,8 +145,9 @@ def main_install():
     cudnn_install()
     print("安装GPU版paddle完毕！请开始你的使用之旅")
     print("====最后验证安装是否成功====")
-    os.system("python -c 'import paddle;paddle.utils.run_check()'")
-    print("如果未成功，请尝试退出终端后重新输入 python -c 'import paddle;paddle.utils.run_check()' ")
+    os.system(f'{my_python_exe} -c "import paddle;paddle.utils.run_check()"')
+    print('如果未成功，请尝试退出终端后重新进入虚拟环境并输入 python -c "import paddle;paddle.utils.run_check()" ')
+    print('或者你也可以通过 python 进入环境后主动 import paddle 随后 paddle.utils.run_check() 进行验证 ')
     print("如果还发生异常，请联系开发人员，祝你使用愉快！")
 
 def _do_install(pkgs):
