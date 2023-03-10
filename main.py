@@ -34,7 +34,7 @@ def cuda_version_detect():
             print("CUDA驱动可能存在问题，请联系开发")
             exit()
         if float(cuda_version) < 11.2:
-            print("你的CUDA驱动版本低于11.2，不适配当前安装程序（默认安装11.2的CUDA），请重新安装大于11.2的版本！")   
+            print("你的CUDA驱动版本低于11.2，不适配当前安装程序（默认安装11.2的 paddle 程序），请重新安装大于11.2的版本！")   
             exit()
 
 def cuda_install():
