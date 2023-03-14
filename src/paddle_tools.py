@@ -6,7 +6,39 @@ pwd = os.getcwd()
 
 def PaddleSlim():
     cd_dst_dir = f"cd {pwd}\{sys._getframe().f_code.co_name} && "
-    print(f"暂未支持{sys._getframe().f_code.co_name} ，请等待！")
+    os.system(f"{cd_dst_dir}{my_python_exe} -m pip install paddleslim")
+    import paddle
+    import paddle.fluid as fluid
+    try:
+        import paddleslim as slim
+    except:
+        print("错误，paddleslim安装失败，请重试若还不行请联系工作人员")
+    paddle.enable_static()
+    exe, train_program, val_program, inputs, outputs =slim.models.image_classification("MobileNet", [1, 28, 28], 10, use_gpu=True)
+    FLOPs = slim.analysis.flops(train_program)
+    print("FLOPs: {}".format(FLOPs))
+    pruner = slim.prune.Pruner()
+    pruned_program, _, _ = pruner.prune(
+            train_program,
+            fluid.global_scope(),
+            params=["conv2_1_sep_weights","conv2_2_sep_weights"],
+            ratios=[0.33] * 2,
+            place=fluid.CPUPlace())
+    FLOPs = slim.analysis.flops(pruned_program)
+    print("FLOPs: {}".format(FLOPs))
+    import paddle.dataset.mnist as reader
+    train_reader = paddle.fluid.io.batch(
+            reader.train(), batch_size=256, drop_last=True)
+    train_feeder = fluid.DataFeeder(inputs, fluid.CPUPlace())
+    count = 0 
+    for data in train_reader():
+        count +=1 
+        if count > 6:
+            break
+        acc1, acc5, loss, _ = exe.run(pruned_program, feed=train_feeder.feed(data), fetch_list=outputs)
+        print("acc1：",acc1, "acc5：",acc5,"loss：", loss)
+
+    print("❀ 若成功看到acc和loss信息，则恭喜你完成 PaddleSlim 的安装！开始你的快乐使用吧 ❀") 
 
 def FastDeploy():
     cd_dst_dir = f"cd {pwd}\{sys._getframe().f_code.co_name} && "
