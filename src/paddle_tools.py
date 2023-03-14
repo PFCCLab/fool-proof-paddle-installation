@@ -168,6 +168,7 @@ def PaddleVideo():
     print("❀ 若出现'archery'识别结果，则恭喜你完成  PaddleVideo 的安装！开始你的快乐使用吧 ❀")
 
 def PaddleGAN():
+    #TODO:https://github.com/PaddlePaddle/PaddleGAN/blob/develop/docs/zh_CN/tutorials/aotgan.md
     cd_dst_dir = f"cd {pwd}\{sys._getframe().f_code.co_name} && "
     print(f"暂未支持{sys._getframe().f_code.co_name} ，请等待！")
 
