@@ -5,8 +5,9 @@ You can use this foolproof tool to download and install PADDLE automatically.
 
 目前已支持linux/windows环境下的 Paddle 和套件的安装。
 
-## 未来的更新
-接下来还将为linux版本加入paddleRS TS 3D REC VisualDL库的支持，以及显式给出 awesome-DeepLearning。同时，在每一个库的后面加上一些字作为简介
+## Call for Contributor
+- 为linux版本加入paddleRS TS 3D REC VisualDL库的支持,给出 awesome-DeepLearning
+- 在每一个库的后面加上一些字作为简介
 
 ## Linux环境下的安装
 你只需要运行`source main.sh`然后根据提示操作即可.
