@@ -93,12 +93,17 @@ def cudnn_install():
     print("\n请ctrl+左键点击网页自行登录并下载CUDNN并把压缩包放到当前目录下：")
     print("https://developer.nvidia.com/compute/machine-learning/cudnn/secure/8.2.1.32/11.3_06072021/cudnn-11.3-windows-x64-v8.2.1.32.zip")
     CUDNN_if_zip = input("你是否已经下载好CUDNN压缩包，并将其移动到当前目录下 [Y/y]（完成后再选择，否则直接进入下一步）")
+    zlib_url = "http://www.winimage.com/zLibDll/zlib123dllx64.zip"
+    zlib_filePath = "zlib123dllx64.zip"
+    os.system(f"powershell Invoke-WebRequest -Uri {zlib_url} -OutFile {zlib_filePath}")
     if CUDNN_if_zip in ["Y","y","yes","YES"]:
         print("开始自动解压......")
-        if os.path.isdir("cuda/lib") and os.path.isdir("cuda"):
+        if os.path.isdir("cuda/lib") and os.path.isdir("cuda") and os.path.isdir("zlib123dllx64"):
             pass
         else:   
             os.system("powershell Expand-Archive -Path cudnn-11.3-windows-x64-v8.2.1.32.zip -DestinationPath .")
+            os.system("powershell Expand-Archive -Path zlib123dllx64.zip -DestinationPath ./zlib")
+            os.system("Copy-Item \".\zlib\dll_x64\zlibwapi.dll\" -Destination \"cuda\" ")
         
         # 确保已经解压成功
         if os.path.isdir("cuda/lib") and os.path.isdir("cuda"):
