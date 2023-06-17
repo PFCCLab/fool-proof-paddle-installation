@@ -206,6 +206,7 @@ echo " "
 echo "验证是否安装成功（此时你应该看到有多个CUDNN_MAJOR类似字样）"
 cat /usr/local/cuda/include/cudnn_version.h | grep CUDNN_MAJOR -A 2
 echo 'export LD_LIBRARY_PATH="/usr/local/cuda/lib64:$LD_LIBRARY_PATH"' >> ~/.bashrc
+echo 'export LD_LIBRARY_PATH="/usr/local/cuda/lib64/"' >> ~/.bashrc
 echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/targets/x86_64-linux/lib' >> ~/.bashrc
 echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/targets/x86_64-linux/lib/stubs/' >> ~/.bashrc
 
